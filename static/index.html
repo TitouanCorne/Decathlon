@@ -29,7 +29,7 @@
                             À tout moment, vous pouvez décider d’interrompre vos lancers et de conclure là votre tentative. Par ailleurs une
                             tentative s’achève automatiquement quand les six dés se trouvent écartés.
                             Si, après un lancer, vous n’êtes plus en mesure d’écarter un nouveau dé parce que tous montrent une valeur paire,
-                            votre tentative se solde par un échec
+                            votre tentative se solde par un échec : vous aurez complètement loupé votre lancer !
                         </div>
                     </div>
                 </div>
@@ -87,14 +87,14 @@
         <button class="btn btn-primary col-md-3" disabled="true" id="continue">Relancer le(s) dé(s) restant(s) !</button>
         <button class="btn btn-danger col-md-3" disabled="true" id="stop">Mettre fin au lancer</button>
     </div>
-    <div>
-        <h1 id="end"></h1>
+    <div id="end_div" >
+        <h1 id="end" class="border border-success p-2 mb-2"></h1>
     </div>
     
         
     <script>
-        var remainingDices = 6
-        var resultat = 0
+        var remainingDices = 6;
+        var resultat = 0;
 
         function affichage(res_dices){
             document.querySelector("#res1").textContent = res_dices[0];
@@ -143,32 +143,44 @@
                 document.querySelector("#end").textContent = nom_joueur.value +" a marqué " + resultat + " point(s)";
             }
         }
+
+        function invalide(remainingDices){ // retourne true si tous les dés sont pairs, false sinon
+            if(remainingDices > 0){
+                for(let i= 1; i < remainingDices+1; i++){ // si le dé est impair
+                    if(document.querySelector("#res" + i.toString()).innerText % 2 == 1){
+                        return false
+                    }
+                }
+                return true //si tous les dés sont pairs
+            }
+            else{
+                return false //s'il n'y a plus de dé
+            }
+        }
+            
        
-        // function mauvais(tab,nbDices){ //tab correspondra aux valeurs des dés et nbDices à remainingDices
-        //     for(let i = 0; i < nbDices; i++){
-        //         if(tab_array[i] != 0){
-        //             invalide = false
-        //         }
-        //     }
-        // }       
 
         function end(){
+            document.querySelector("#end").style.display = 'block';
             document.querySelector("#end").textContent = nom_joueur.value +" a marqué " + resultat + " point(s)";
+            document.querySelector("#continuer").style.display="none";
         }
 
         function btn_freeze(id_btn){ //fait appel au serveur pour geler un dé (le serveur vérifie que le résultat du dé est bien impair pour que ce dernier puisse etre gelé)
             fetch('/choose/?valeur=' + n)
                 .then(response => response.json())
                 .then(data => {
-                    freeze = data.freeze
-                    score_de = data.score_de
-                    console.log(freeze)
+                    freeze = data.freeze;
+                    score_de = data.score_de;
+                    // console.log(freeze)
                     if(freeze == true){
-                        remainingDices = remainingDices - 1
-                        document.getElementById("remainingDices").textContent =  remainingDices
-                        resultat = resultat + parseInt(score_de)
-                        console.log(resultat)
-                        document.getElementById("resultat").textContent =  resultat
+                        remainingDices = remainingDices - 1;
+                        if(remainingDices == 0){
+                            document.querySelector("#continue").style.display="none";
+                        }
+                        document.getElementById("remainingDices").textContent =  remainingDices;
+                        resultat = resultat + parseInt(score_de);
+                        document.getElementById("resultat").textContent =  resultat;
                         document.querySelector("#stop").disabled = false;
                         document.querySelector("#continue").disabled = false;
                         document.querySelector(id_btn).disabled = true;
@@ -217,6 +229,11 @@
                     document.querySelector("#choose4").disabled = false;
                     document.querySelector("#choose5").disabled = false;
                     document.querySelector("#choose6").disabled = false;
+                    if(invalide(remainingDices)){
+                        document.querySelector("#end").style.display="block";
+                        document.querySelector("#end").textContent = nom_joueur.value +" a complètement loupé son lancer !";
+                        document.querySelector("#continuer").style.display="none";
+                    }
                 })
                 .catch(error => {
                     console.log('Il y a eu un problème avec l\'opération fetch: ' + error.message);
@@ -267,6 +284,11 @@
                 res_dices = data.res_dices 
                 console.log(data)
                 affichage(res_dices)
+                if(invalide(remainingDices)){
+                    document.querySelector("#end").style.display="block";
+                    document.querySelector("#end").textContent = nom_joueur.value +" a complètement loupé son lancer !";
+                    document.querySelector("#continuer").style.display="none";
+                }
             })
             .catch(error => {
                 console.log('Il y a eu un problème avec l\'opération fetch: ' + error.message);

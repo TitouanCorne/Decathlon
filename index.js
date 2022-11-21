@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
 const lancer = require('./back/lancer.js');
+const { invalide } = require('./back/lancer.js');
 const app = express()
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -33,8 +34,8 @@ app.get(encodeURI('/choose'), (req, res) => {
     n = req.query["valeur"]
     freeze = lancer.freeze(n)
     score_de = lancer.majresultat(n)
-    console.log(freeze)
-    console.log(score_de)
+    // console.log(freeze)
+    // console.log(score_de)
     res.json({
         freeze : freeze, //si freeze = True c'est qu'on peut freeze le dé
         score_de : score_de,

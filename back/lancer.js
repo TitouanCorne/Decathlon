@@ -32,5 +32,5 @@ function majresultat(n){
 module.exports = {
     res_dices : res_dices,
     freeze : freeze,
-    majresultat : majresultat
+    majresultat : majresultat,
 }
