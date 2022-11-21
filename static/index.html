@@ -58,38 +58,41 @@
     <div id="dices_result" class="container">
         <div id="dices">
             <div class="row">
-                <div class="col-md" id="dice1"><p>Dé n°1</p>
+                <div class="col-md de" id="dice1"><p>Dé n°1</p>
                     <h2 id="res1"></h2>
                     <button class="btn btn-primary" id="choose1" disabled="true">Garder ce dé</button>
                 </div>
-                <div class="col-md" id="dice2"><p>Dé n°2</p>
+                <div class="col-md de" id="dice2"><p>Dé n°2</p>
                     <h2 id="res2"></h2>
                     <button class="btn btn-primary" id="choose2" disabled="true">Garder ce dé</button>
                 </div>
-                <div class="col-md" id="dice3"><p>Dé n°3</p>
+                <div class="col-md de" id="dice3"><p>Dé n°3</p>
                     <h2 id="res3"></h2>
                     <button class="btn btn-primary" id="choose3" disabled="true">Garder ce dé</button>
                 </div>
-                <div class="col-md" id="dice4"><p>Dé n°4</p>
+                <div class="col-md de" id="dice4"><p>Dé n°4</p>
                     <h2 id="res4"></h2>
                     <button class="btn btn-primary" id="choose4" disabled="true">Garder ce dé</button> 
                 </div>
-                <div class="col-md" id="dice5"><p>Dé n°5</p>
+                <div class="col-md de" id="dice5"><p>Dé n°5</p>
                     <h2 id="res5"></h2>
                     <button class="btn btn-primary" id="choose5" disabled="true">Garder ce dé</button> 
                 </div>
-                <div class="col-md" id="dice6"><p>Dé n°6</p>
+                <div class="col-md de" id="dice6"><p>Dé n°6</p>
                     <h2 id="res6"></h2>
                     <button class="btn btn-primary" id="choose6" disabled="true">Garder ce dé</button> 
                 </div>
         </div>
     </div>
-    <div class="row" id="continuer">
+    <div class="row relancer" id="continuer">
         <button class="btn btn-primary col-md-3" disabled="true" id="continue">Relancer le(s) dé(s) restant(s) !</button>
         <button class="btn btn-danger col-md-3" disabled="true" id="stop">Mettre fin au lancer</button>
     </div>
     <div id="end_div" >
         <h1 id="end" class="border border-success p-2 mb-2"></h1>
+    </div>
+    <div id="rejouer">
+        <button onclick='document.location.reload(false)' class="btn btn-secondary" data-bs-dismiss="modal" id="rejoue">Rejouer </button>
     </div>
     
         
@@ -177,6 +180,7 @@
             }
             document.querySelector("#continuer").style.display="none";
             document.querySelector("#dices").style.display="none";
+            document.querySelector("#rejouer").style.display="block";
         }
 
         function btn_freeze(id_btn){ //fait appel au serveur pour geler un dé (le serveur vérifie que le résultat du dé est bien impair pour que ce dernier puisse etre gelé)
@@ -246,6 +250,7 @@
                         document.querySelector("#end").style.display="block";
                         document.querySelector("#end").textContent = nom_joueur.value +" a complètement loupé son lancer !";
                         document.querySelector("#continuer").style.display="none";
+                        document.querySelector("#rejouer").style.display="block";
                     }
                 })
                 .catch(error => {
@@ -301,6 +306,7 @@
                     document.querySelector("#end").style.display="block";
                     document.querySelector("#end").textContent = nom_joueur.value +" a complètement loupé son lancer !";
                     document.querySelector("#continuer").style.display="none";
+                    document.querySelector("#rejouer").style.display="block";
                 }
             })
             .catch(error => {

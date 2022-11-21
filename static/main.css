@@ -48,3 +48,13 @@ p{
 #end_div{
     margin-top: 10px; 
 }
+#rejouer{
+    text-align: center;
+    display : none;
+}
+.de{
+    text-align: center;
+}
+.relancer{
+    text-align: center;
+}
