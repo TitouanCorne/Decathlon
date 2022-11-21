@@ -4,13 +4,14 @@
       <meta charset="utf-8"/>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+      <link rel="icon" href="./media/favicon.ico"/>
       <link rel="stylesheet" href="main.css" />
       <title>JavelinGame</title>
   </head>
   <body>
     <div class="container">
         <div class="main">
-            <header class="h1 text-center">Lancer de Javelot</header>
+            <header class="h1 text-center">JavelinGame</header>
             
             <!-- Accordéon pour les règles du jeu : -->
             <div class="accordion accordion-flush" id="Deroulant_Regles">
@@ -44,7 +45,7 @@
                 <div class="col-md-4 text-center">
                     <input type="button" value="Valider" class="btn btn-primary" id="btn_lancement">
                 </div>
-                <p id="affiche_nom_joueur" class="col-md-4"> </p> <!--contiendra le nom du joueur -->
+                <p id="affiche_nom_joueur" class="col-md-4"></p> <!--contiendra le nom du joueur -->
                 <p id="affiche_resultat" class="col-md-2"></p> <!--contiendra le résultat du joueur -->
                 <p id ="resultat" class="col-md-2"></p>
                 <p id="affiche_remainingDices" class="col-md-2"></p>
@@ -162,8 +163,20 @@
 
         function end(){
             document.querySelector("#end").style.display = 'block';
-            document.querySelector("#end").textContent = nom_joueur.value +" a marqué " + resultat + " point(s)";
+            if(resultat>25 && resultat<30){
+                document.querySelector("#end").textContent = nom_joueur.value +" a fait un beau lancer, il marque " + resultat + " point(s)";
+            }
+            else if(resultat == 30){
+                document.querySelector("#end").textContent = nom_joueur.value +" a fait un lancer parfait ! Il marque " + resultat + " point(s)";
+            }
+            else if(resultat>15 && resultat<26){
+                document.querySelector("#end").textContent = nom_joueur.value +" a marqué " + resultat + " point(s). Il peut mieux faire...";
+            }
+            else{
+                document.querySelector("#end").textContent = nom_joueur.value +" a marqué seulement " + resultat + " point(s). A sa place j'arrêterais ce sport...";
+            }
             document.querySelector("#continuer").style.display="none";
+            document.querySelector("#dices").style.display="none";
         }
 
         function btn_freeze(id_btn){ //fait appel au serveur pour geler un dé (le serveur vérifie que le résultat du dé est bien impair pour que ce dernier puisse etre gelé)
